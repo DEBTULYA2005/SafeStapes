@@ -37,10 +37,10 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = False
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://safestapesproject.onrender.com' 
+    'https://safestapes.onrender.com' 
 ]
 
-ALLOWED_HOSTS = ['safestapesproject.onrender.com','52.41.36.82','localhost', '127.0.0.1', '*']
+ALLOWED_HOSTS = ['safestapes.onrender.com','52.41.36.82','localhost', '127.0.0.1', '*']
 
 SITE_ID = 1
 
