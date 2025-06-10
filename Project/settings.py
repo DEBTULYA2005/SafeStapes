@@ -195,7 +195,8 @@ CLOUDINARY_STORAGE = {
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage' 
 
-print("Cloudinary name:", os.getenv('CLOUDINARY_CLOUD_NAME')) 
+print("Cloudinary name:", os.getenv('CLOUDINARY_CLOUD_NAME'))
+print("GOOGLE_CLIENT_SECRET:", os.getenv('GOOGLE_CLIENT_SECRET')) 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
