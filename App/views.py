@@ -831,10 +831,10 @@ def google_callback(request):
 
     # Step 3: Get user info from Google
     user_info = requests.get(
-        "https://www.googleapis.com/oauth2/v2/userinfo",
-        headers={'Authorization': f'Bearer {access_token}'}
+    "https://www.googleapis.com/oauth2/v3/userinfo",
+    headers={'Authorization': f'Bearer {access_token}'}
     ).json()
-
+    
     # Step 4: Create or get user in Django
     UserModel = get_user_model()
     user, _ = UserModel.objects.get_or_create(
