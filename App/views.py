@@ -24,6 +24,10 @@ from django.core.management import call_command
 from django.http import HttpResponse
 import os
 
+def health_check(request):
+    """Endpoint to verify backend is ready."""
+    return HttpResponse("OK", status=200)
+
 def check_redirect_url(request):
     url = reverse('social:complete', args=['google-oauth2'])
     return HttpResponse(f"Redirect URI: {url}")

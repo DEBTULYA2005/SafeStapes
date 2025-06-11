@@ -5,6 +5,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 
+    path('health/', views.health_check, name='health-check'),
+
     path('run_migrations/', views.run_migrations, name='run_migrations'), 
     path('delete_user/', views.delete_user, name='delete_user'),
     path('check-uri/', views.check_redirect_url, name='check-uri'),
