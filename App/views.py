@@ -809,65 +809,69 @@ def google_auth(request):
     return redirect(auth_url)
 
 def google_callback(request):
-    # Step 1: Get the authorization code from Google
-    code = request.GET.get('code')
-    if not code:
-        return redirect('/')  # or show an error page
+    try: 
+        # Step 1: Get the authorization code from Google
+        code = request.GET.get('code')
+        if not code:
+            return redirect('/')  # or show an error page
 
-    # Step 2: Exchange the code for an access token
-    token_url = "https://oauth2.googleapis.com/token"
-    data = {
-        'code': code,
-        'client_id': settings.GOOGLE_CLIENT_ID,
-        'client_secret': settings.GOOGLE_CLIENT_SECRET,
-        'redirect_uri': settings.GOOGLE_REDIRECT_URI,
-        'grant_type': 'authorization_code', 
-    }
-    response = requests.post(token_url, data=data).json()
-    access_token = response.get('access_token')
+        # Step 2: Exchange the code for an access token
+        token_url = "https://oauth2.googleapis.com/token"
+        data = {
+            'code': code,
+            'client_id': settings.GOOGLE_CLIENT_ID,
+            'client_secret': settings.GOOGLE_CLIENT_SECRET,
+            'redirect_uri': settings.GOOGLE_REDIRECT_URI,
+            'grant_type': 'authorization_code', 
+        }
+        response = requests.post(token_url, data=data).json()
+        access_token = response.get('access_token')
 
-    if not access_token:
-        return redirect('/')  # failed to get token
+        if not access_token:
+            return redirect('/')  # failed to get token
 
-    # Step 3: Get user info from Google
-    user_info = requests.get(
-        "https://www.googleapis.com/oauth2/v2/userinfo",
-        headers={'Authorization': f'Bearer {access_token}'}
-    ).json()
+        # Step 3: Get user info from Google
+        user_info = requests.get(
+            "https://www.googleapis.com/oauth2/v2/userinfo",
+            headers={'Authorization': f'Bearer {access_token}'}
+        ).json()
 
-    # Step 4: Create or get user in Django
-    UserModel = get_user_model()
-    user, _ = UserModel.objects.get_or_create(
-        email=user_info['email'],
-        # defaults={'username': user_info.get('email', '').split('@')[0]}
-    ) 
+        # Step 4: Create or get user in Django
+        UserModel = get_user_model()
+        user, _ = UserModel.objects.get_or_create(
+            email=user_info['email'],
+            # defaults={'username': user_info.get('email', '').split('@')[0]}
+        ) 
 
-    # Step 5: Log the user in
-    user.backend = 'django.contrib.auth.backends.ModelBackend'
-    login(request, user)
+        # Step 5: Log the user in
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
 
-    # Optional: customize username if you store full name elsewhere
-    # if User.objects.filter(email=user.email).exists():
-    #     user_1 = User.objects.get(email=user.email)
-    #     if hasattr(user_1, 'full_name'):
-    #         first_name = user_1.full_name.split()[0]
-    #         user.username = first_name
-    #         user.save()
+        # Optional: customize username if you store full name elsewhere
+        # if User.objects.filter(email=user.email).exists():
+        #     user_1 = User.objects.get(email=user.email)
+        #     if hasattr(user_1, 'full_name'):
+        #         first_name = user_1.full_name.split()[0]
+        #         user.username = first_name
+        #         user.save()
 
-    # Step 6: Store session data and render user info
-    request.session['user'] = user.username
-    request.session['email'] = user.email
-    request.session['Auth_name'] = user_info.get('name')
-    request.session['Auth_email'] = user_info.get('email')
-    request.session['Auth_picture'] = user_info.get('picture')
+        # Step 6: Store session data and render user info
+        request.session['user'] = user.username
+        request.session['email'] = user.email
+        request.session['Auth_name'] = user_info.get('name')
+        request.session['Auth_email'] = user_info.get('email')
+        request.session['Auth_picture'] = user_info.get('picture')
 
-    return redirect('dashboard')
+        return redirect('dashboard')
 
-    # return render(request, 'user_Main.html', {
-    #     'name': user_info.get('name'),
-    #     'email': user_info.get('email'),
-    #     'picture': user_info.get('picture'),
-    # })
+        # return render(request, 'user_Main.html', {
+        #     'name': user_info.get('name'),
+        #     'email': user_info.get('email'),
+        #     'picture': user_info.get('picture'),
+        # })
+    except Exception as e:
+        HTTPResponse("Error in Google callback:", str(e), "Try to use manual signup/login")
+        return redirect('user_signUp')
 
 # Admin's All Logic
 
