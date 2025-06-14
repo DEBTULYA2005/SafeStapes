@@ -323,13 +323,33 @@
                 </div> -->
 
 
-                <!-- Chart Section-->
-                <div id="chart_Section" class="content-section">
-                    <h3 class="section-title">Total Pickup/Drop Locations</h3>
-                    <div class="chart_Container" id="doughnut-chart">
-                            <canvas id="lineChart"></canvas>
+                <div id="reviews" class="content-section">
+                    <h3 class="section-title">Frequently Used Locations</h3>
+                
+                    <form method="get" style="margin-bottom: 20px;">
+                        <label for="user">User:</label>
+                        <select name="user" id="user">
+                            <option value="all">All Users</option>
+                            {% for user in users %}
+                                <option value="{{ user.id }}" {% if selected_user == user.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ user.full_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                
+                        <label for="status">Status:</label>
+                        <select name="status" id="status">
+                            <option value="all" {% if selected_status == 'all' %}selected{% endif %}>All</option>
+                            <option value="Pending" {% if selected_status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="Accepted" {% if selected_status == 'Accepted' %}selected{% endif %}>Accepted</option>
+                        </select>
+                
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </form>
+                
+                    <div style="max-width: 800px;">
+                        <canvas id="locationChart"></canvas>
                     </div>
-                </div>
 
             </div>
         </main>
