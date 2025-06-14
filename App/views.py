@@ -1058,4 +1058,4 @@ def frequent_locations_view(request):
         'selected_user': user_id or 'all',
         'selected_status': status or 'all',
     }
-    return render(request, 'frequent_locations_chart.html', context)
+    return render(request, 'admin_Panel.html', context)
