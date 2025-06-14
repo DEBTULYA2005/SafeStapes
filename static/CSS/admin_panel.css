@@ -982,3 +982,9 @@ aside {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 } */
+
+/* Chart Section */
+.chart_Container {
+    width: 80%;
+    margin: 20px auto;
+}
