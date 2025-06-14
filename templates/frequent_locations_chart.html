@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frequent Locations</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>Frequently Used Locations</h2>
+    <form method="get">
+        <label>User:</label>
+        <select name="user">
+            <option value="all">All Users</option>
+            {% for user in users %}
+                <option value="{{ user.id }}" {% if selected_user == user.id|stringformat:"s" %}selected{% endif %}>
+                    {{ user.full_name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Status:</label>
+        <select name="status">
+            <option value="all" {% if selected_status == 'all' %}selected{% endif %}>All</option>
+            <option value="Pending" {% if selected_status == 'Pending' %}selected{% endif %}>Pending</option>
+            <option value="Accepted" {% if selected_status == 'Accepted' %}selected{% endif %}>Accepted</option>
+        </select>
+
+        <button type="submit">Filter</button>
+    </form>
+
+    <canvas id="locationChart" width="600" height="400"></canvas>
+
+    <script>
+        const ctx = document.getElementById('locationChart').getContext('2d');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ location_labels|safe }},
+                datasets: [{
+                    label: 'Usage Count',
+                    data: {{ location_values|safe }},
+                    backgroundColor: '#36A2EB'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Top Frequently Used Locations (Pickup + Dropoff)'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

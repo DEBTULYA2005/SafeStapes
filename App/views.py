@@ -23,6 +23,7 @@ from django.views.defaults import page_not_found
 from django.core.management import call_command
 from django.http import HttpResponse
 import os
+from collections import Counter
 
 def health_check(request):
     """Endpoint to verify backend is ready."""
@@ -1024,3 +1025,37 @@ def add_member(request):
     
     return render(request, 'admin_Panel.html')
 
+
+def frequent_locations_view(request):
+    user_id = request.GET.get('user')
+    status = request.GET.get('status')
+
+    users = User.objects.all()
+    ride_qs = RideRequest.objects.all()
+
+    # Optional filters
+    if user_id and user_id != 'all':
+        ride_qs = ride_qs.filter(user_id=user_id)
+
+    if status and status != 'all':
+        ride_qs = ride_qs.filter(status=status)
+
+    # Merge pickup + dropoff locations
+    pickup_data = list(ride_qs.values_list('pickup_location', flat=True))
+    dropoff_data = list(ride_qs.values_list('dropoff_location', flat=True))
+    all_locations = pickup_data + dropoff_data
+
+    location_counts = dict(Counter(all_locations))
+    sorted_locations = sorted(location_counts.items(), key=lambda x: x[1], reverse=True)[:10]  # top 10
+
+    labels = [loc[0] for loc in sorted_locations]
+    values = [loc[1] for loc in sorted_locations]
+
+    context = {
+        'users': users,
+        'location_labels': labels,
+        'location_values': values,
+        'selected_user': user_id or 'all',
+        'selected_status': status or 'all',
+    }
+    return render(request, 'frequent_locations_chart.html', context)
