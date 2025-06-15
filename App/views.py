@@ -25,6 +25,8 @@ from django.http import HttpResponse
 import os
 from collections import Counter
 
+def terms(request):
+    return render(request, "terms.html")
 
 def policy(request):
     return render(request, "privacy.html")
