@@ -30,7 +30,6 @@
     <!-- Nominatim Geocoder -->
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
-
     <style>
         .leaflet-control-attribution {
           display: none !important;
@@ -39,11 +38,25 @@
         .leaflet-routing-container {
             display: none !important;
         }
+        
+        #cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background-color: #48fb9f;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+        }
     </style>
 
 </head>
 
 <body>
+    <div id="cursor"></div>
 
     <!-- Custom Alert -->
     <div id="customAlert" class="alert-box">
@@ -81,7 +94,7 @@
                     </svg>
                     <h2 class="logo-text">SafetyBot</h2>
                 </div>
-                <button id="close-chatbot" class="material-symbols-rounded">keyboard_arrow_down</button>
+                <button id="close-chatbot" class="material-symbols-rounded">close</button>
             </div>
         </header>
 
@@ -144,14 +157,31 @@
             </div>
 
         </div>
+
+        <div class="close_menu">
+            <ul>
+                <a href="#home" id="active">HOME</a>
+                <a href="#sideMenu" id="profileLink">PROFILE</a>
+                <a href="#about_Section">ABOUT</a>
+                <a href="#service_section">SERVICES</a>
+                <a href="#partners_section">PARTNERS</a>
+                <a href="#donation_section">DONATION</a>
+
+                <div class="closeBtn">
+                    <i class="fa-solid fa-close" id="close-btn"></i>
+                </div>
+            </ul>
+        </div>
+
         <!-- Side Menu Bar -->
         <div class="side-menu" id="sideMenu">
             <div class="side-menu-header">
                 <div class="sidebar-title">
                     <h2>Safe-Steps</h2>
                 </div>
-
-                <button id="closeMenu">&times;</button> <!-- Close Button -->
+                <div class="closeMenu">
+                    <i class="fa-solid fa-close" id="closeMenu"></i>
+                </div>
             </div>
             <!-- Profile Avatar -->
             <div class="profile-header">
@@ -169,12 +199,12 @@
                         <input type="file" id="avatarInput" name="avatar" accept="image/*" style="display: none;" onchange="document.getElementById('avatarForm').submit()">
                     </div>
                 </form>
-                <h2>  {% if user.full_name %}
+                <h2>{% if user.full_name %}
                     {{ user.full_name }}
                   {% else %}
                     {{ Auth_name }}
                   {% endif %}</h2>
-                <p>  {% if user.email %}
+                <p>{% if user.email %}
                     {{ user.email }}
                   {% else %}    
                     {{ Auth_email }}
@@ -186,7 +216,6 @@
                     <i class="fa-solid fa-right-from-bracket" id="logout-profile"></i>Logout
                     </a>
                 </li>
-
             </ul>
         </div>
 
@@ -204,7 +233,6 @@
                         </div>
                         <div class="content">
                             <a href="#ride_booking" class="btn">BOOK SAFE RIDE</a>
-                            <!-- <a href="#ride_booking" class="btn2">Emergency</a> -->
                         </div>
                     </div>
 
@@ -227,7 +255,6 @@
                         <h1>fe</h1>
                         <h3>Steps</h3>
                         <div class="content">
-                            {% comment %} <a href="#ride_booking" class="btn">Book Safe Ride</a> {% endcomment %}
                             <button class="btn2" id="emergency-btn">Emergency</button>
                         </div>
                     </div>
@@ -265,7 +292,6 @@
                                     <a href="#"><i class="fa-brands fa-github"></i></a>
                                     <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                                 </div>
-                                <!-- <button class="button">View More</button> -->
                             </div>
                         </div>
                         <!-- Shuvaranjan -->
@@ -288,7 +314,6 @@
                                     <a href="#"><i class="fa-brands fa-github"></i></a>
                                     <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                                 </div>
-                                <!-- <button class="button">View More</button> -->
                             </div>
                         </div>
                         <!-- Debtulya -->
@@ -306,13 +331,11 @@
                                 <p id="description">Backend Development of Safe-Steps, I am Debtulya Sarkar from
                                     Durgapur.</p>
 
-
                                 <div class="social-icons">
                                     <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
                                     <a href="#"><i class="fa-brands fa-github"></i></a>
                                     <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                                 </div>
-                                <!-- <button class="button">View More</button> -->
                             </div>
                         </div>
                         <!-- tanmoy -->
@@ -335,7 +358,6 @@
                                     <a href="#"><i class="fa-brands fa-github"></i></a>
                                     <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                                 </div>
-                                <!-- <button class="button">View More</button> -->
                             </div>
                         </div>
                         <!-- Koyel -->
@@ -358,7 +380,6 @@
                                     <a href="#"><i class="fa-brands fa-github"></i></a>
                                     <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                                 </div>
-                                <!-- <button class="button">View More</button> -->
                             </div>
                         </div>
                         <!-- Mondira -->
@@ -381,7 +402,6 @@
                                     <a href="#"><i class="fa-brands fa-github"></i></a>
                                     <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
                                 </div>
-                                <!-- <button class="button">View More</button> -->
                             </div>
                         </div>
 
@@ -403,7 +423,6 @@
                     </div>
                     <div class="services-list">
                         <div>
-                            <!-- <i class="fa-solid fa-briefcase"></i> -->
                             <img src="{% static 'assets/images/self_defense.png' %}">
                             <h2>Women's Self-Defense Training</h2>
                             <p>
@@ -413,7 +432,6 @@
                                     Support</button></a>
                         </div>
                         <div>
-                            <!-- <i class="fa-solid fa-phone"></i> -->
                             <img src="{% static 'assets/images/cyber_security.png' %}">
                             <h2>Cyber Safety & Online Harassment Awareness</h2>
                             <p>
@@ -423,7 +441,6 @@
                                     type="submit">Get Support</button></a>
                         </div>
                         <div>
-                            <!-- <i class="fa-solid fa-heart-pulse"></i> -->
                             <img src="{% static 'assets/images/right_education.png' %}">
                             <h2>Legal Rights Education Sessions</h2>
                             <p>
@@ -433,7 +450,6 @@
                                     class="service-btn" type="submit">Get Support</button></a>
                         </div>
                         <div>
-                            <!-- <i class="fa-solid fa-shield-halved"></i> -->
                             <img src="{% static 'assets/images/safety_device.png' %}">
                             <h2>Safety Device Distribution Drives</h2>
                             <p>
@@ -456,7 +472,6 @@
                     </div>
                     <div class="partners-list">
                         <div>
-                            <!-- <i class="fa-solid fa-globe"></i> -->
                             <img src="{% static 'assets/images/indian_flag.png' %}">
                             <h2>Nirbhaya Fund (Government of India)</h2>
                             <p>Support Type: Grant (No repayment) How it helps: Funds women safety initiatives by
@@ -469,7 +484,6 @@
                         </div>
 
                         <div>
-                            <!-- <i class="fa-solid fa-hand-holding-heart"></i> -->
                             <img src="{% static 'assets/images/indian_flag.png' %}">
                             <h2>Breakthrough India</h2>
                             <p>Support Type: NGO collaboration (No money involved, just network and training) How it
@@ -480,7 +494,6 @@
                         </div>
 
                         <div>
-                            <!-- <i class="fa-solid fa-people-carry-box"></i> -->
                             <img src="{% static 'assets/images/women_safety.png' %}">
                             <h2>Safety</h2>
                             <p>Support Type: Collaboration (No repayment) How it helps: Awareness, outreach, and
@@ -492,7 +505,6 @@
                         </div>
 
                         <div>
-                            <!-- <i class="fa-solid fa-user-shield"></i> -->
                             <img src="{% static 'assets/images/un_women.png' %}">
                             <h2>UN Women India</h2>
                             <p>Support Type: Grant & partnerships (No payback) How it helps: Visibility, global
@@ -525,18 +537,10 @@
                         <input type="text" id="pickupLocation" name="pickup" placeholder="Enter pickup location">
                         <label for="dropLocation">To</label>
                         <input type="text" id="dropLocation" name="dropoff" placeholder="Enter drop location">
-                        <!-- 
-                        <div class="ride-details hidden" id="rideDetails">
-                            <p>Estimated Distance: <span id="distance"></span></p>
-                            <p>Estimated Duration: <span id="duration"></span></p>
-                            <p>Approximate Fare: <span id="fare"></span></p>
-                        </div> -->
 
                         <button type="submit" id="calculateRoute">Book Ride</button>
                      </form>
-                        <!-- <button id="bookRide" class="hidden">Confirm Booking</button> -->
                     </div>
-
                 </div>
 
                 <div class="response-container" id="responseContainer">
@@ -556,18 +560,12 @@
                     </div>
 
                     <div class="search-fields">
-
                         <button id="cancelRide">Cancel</button>
-
                     </div>
-
-
                 </div>
 
                 <div class="rider-container" id="riderContainer">
                     <div class="title">
-                        <i class="fa-solid fa-taxi"></i>
-
                         <div class="loading">
                             <h1>Rider is Coming</h1>
                             <div class="dot"></div>
@@ -580,19 +578,9 @@
                         </div>
                     </div>
 
-                    <!-- Search Fields -->
                     <div class="button-fields">
                         <button id="cancelRide">Cancel-Ride</button>
-                        <!-- <button id="cancelRide">Call</button> -->
-
                     </div>
-
-                    <!-- Confirmation Messages -->
-                    <!-- <div id="confirmationMessages">
-                        <p id="rideBookedMessage" class="hidden">Your ride has been booked! You will arrive shortly.</p>
-                        <p id="arrivalConfirmationMessage" class="hidden">Safe-Steps, 😊Thank you for confirming your
-                            safe arrival!</p>
-                    </div> -->
                 </div>
 
                 <div class="mapView">
@@ -602,7 +590,6 @@
             </div>
         </section>
     </main>
-
 
     <footer>
         <!------------------------------------- Contact -------------------------------------------->
@@ -615,13 +602,11 @@
                         <p><i class="fas fa-paper-plane"></i> safesteps247@gmail.com</p>
                         <p><i class="fa-solid fa-square-phone"></i> 8650068493</p>
                         <p><i class="fa-solid fa-shield-halved"></i> 24*7</p>
-
                     </div>
 
                     <div class="contact-right">
                         <form method="POST" action="{% url 'contact' %}">
                             {% csrf_token %}
-                            <!-- <input type="hidden" name="access_key" value="620c1cdf-1175-4b4d-b3dd-c4985b650d36"> -->
                             <input type="text" name="Name" id="fname" value={% if user.full_name %}
                             {{ user.full_name }}
                           {% else %}
@@ -656,7 +641,6 @@
                     <p>Use your mobile payment app to scan the QR code</p>
 
                     <div class="qr-code">
-                        <!-- Replace with your actual QR code image -->
                         <img src="{% static 'assets/images/qr.jpg' %}" alt="Donation QR Code">
                     </div>
 
@@ -679,21 +663,20 @@
                         Thank you &hearts; for your generosity
                     </div>
                 </div>
-
-        </div>
-        </section>
-        <div class="footer-bar">
-
-            <div class="div">
-                <a href="{% url 'terms' %}">Terms & Conditions</a> | <a href="{% url 'privecy_policies' %}">Privecy Policies</a>
-                <p>Copyright &copy; Safe-Steps <i class="fa-solid fa-heart"></i></p>
+            </section>
+            
+            <div class="footer-bar">
+                <div class="div">
+                    <a href="{% url 'terms' %}">Terms & Conditions</a> | <a href="{% url 'privecy_policies' %}">Privecy Policies</a>
+                    <p>Copyright &copy; Safe-Steps <i class="fa-solid fa-heart"></i></p>
+                </div>
+                <div class="footer-box">
+                    <a href="#home"><i class="fa-solid fa-arrow-up-from-bracket"></i></a>
+                </div>
             </div>
-            <div class="footer-box">
-                <a href="#home"><i class="fa-solid fa-arrow-up-from-bracket"></i></a>
-            </div>
-        </div>
         </div>
     </footer>
+
 
 
 
