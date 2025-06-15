@@ -324,7 +324,7 @@
 
 
                 <div id="reviews" class="content-section">
-                    <h3 class="section-title">Frequently Used Locations</h3>
+                    <h3 class="section-title">Total Pickup/Dropoff Locations</h3>
                 
                     <form method="get" style="margin-bottom: 20px;">
                         <label for="user">User:</label>
@@ -387,7 +387,7 @@
         const locationCtx = document.getElementById('locationChart').getContext('2d');
                 
         new Chart(locationCtx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: {{ location_labels|safe }},
                 datasets: [{
