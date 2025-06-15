@@ -435,10 +435,19 @@ body {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    -webkit-mask: linear-gradient(#000 0 0),
+    /* -webkit-mask: linear-gradient(#000 0 0),
         linear-gradient(#000 0 0);
     -webkit-mask-clip: text, padding-box;
+    -webkit-mask-composite: xor; */
+    /* WebKit support */
+    -webkit-mask: linear-gradient(#000 0 0);
+    -webkit-mask-clip: text, padding-box;
     -webkit-mask-composite: xor;
+
+    /* Standard syntax for other browsers */
+    mask: linear-gradient(#000 0 0);
+    mask-clip: text, padding-box;
+    mask-composite: exclude; /* or 'xor', depending on your intent */
 
 }
 
@@ -3029,10 +3038,20 @@ body {
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        -webkit-mask: linear-gradient(#000 0 0),
+        /* -webkit-mask: linear-gradient(#000 0 0),
             linear-gradient(#000 0 0);
         -webkit-mask-clip: text, padding-box;
+        -webkit-mask-composite: xor; */
+
+        /* WebKit (Safari/Chrome) */
+        -webkit-mask: linear-gradient(#000 0 0);
+        -webkit-mask-clip: text;
         -webkit-mask-composite: xor;
+
+        /* Standard syntax for other browsers */
+        mask: linear-gradient(#000 0 0);
+        mask-clip: text;
+        mask-composite: exclude; /* or 'xor' depending on your design */
     }
 
 
