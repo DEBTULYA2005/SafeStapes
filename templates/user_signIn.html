@@ -17,7 +17,7 @@
     <!-- Video Background -->
     <div class="video-background">
         <video autoplay muted loop id="bg-video" preload="auto">
-            {% comment %} <source src="{% static 'assets/videos/hands.mp4' %}" type="video/mp4"> {% endcomment %}
+            <source src="{% static 'assets/videos/hands.mp4' %}" type="video/mp4">
             <!-- Your browser does not support the video  -->
         </video>
     </div>
@@ -82,6 +82,8 @@
             </div>
         </form>
     </div>
+    <a href="{% url 'terms' %}">Terms and Conditions</a>
+    <a href="{% url 'policy' %}">Privacy Policy</a>
 
     <script src="{% static 'JavaScript/user_signIn.js' %}"></script>
 

@@ -34,7 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = False    # change True for local use
 
 CSRF_TRUSTED_ORIGINS = [
     'https://safestapes.onrender.com' 
@@ -65,8 +65,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 
-    'cloudinary',
-    'cloudinary_storage',
+    'cloudinary',           # Cloudinary for image storage
+    'cloudinary_storage',   # Cloudinary storage backend
 
 ]
 
