@@ -391,9 +391,14 @@
             data: {
                 labels: {{ location_labels|safe }},
                 datasets: [{
-                    label: 'Number of Rides',
-                    data: {{ location_values|safe }},
-                    backgroundColor: '#36A2EB'
+                    label: 'Top Frequently Used Pickup & Dropoff Locations',
+                data: {{ location_values|safe }},
+                fill: false,
+                borderColor: 'rgba(54, 162, 235, 1)',
+                tension: 0.3,  // smooth lines
+                pointBackgroundColor: 'white',
+                pointBorderColor: 'rgba(54, 162, 235, 1)',
+                pointRadius: 4
                 }]
             },
             options: {
