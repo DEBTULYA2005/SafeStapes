@@ -45,7 +45,7 @@ document.getElementById('avatarInput').addEventListener('change', function (even
 var emergencyPanel = document.getElementById('emergency-panel2');
 var emergencyBtn = document.getElementById('emergency-btn');
 var emergencyClose = document.getElementById('emergency-closebtn');
-var background = document.getElementById('backdrop'); 
+var background = document.getElementById('backdrop');
 
 emergencyBtn.addEventListener('click', function (event) {
 
@@ -206,11 +206,6 @@ const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-
 
 
 // Add this function
-
-
-
-
-
 const userData = {
     message: null,
     file: {
@@ -252,7 +247,7 @@ const faqs = {
     "contact": "Email us at safesteps@gmail.com",
     "services": "We offer: " +
         "\n1. Women Self Defense Training\n" +
-        "2. Cyber Safety and Online Harassement Awarness\n" +
+        "2. Cyber Safety and Online Harassment Awareness\n" +
         "3. Legal Rights Education Sessions\n" +
         "4. Safety Device Distributions for Drivers",
     "help": "call this number 9064714325\n" +
@@ -475,9 +470,24 @@ document.querySelector(".chat-form").appendChild(picker);
 
 sendMessageButton.addEventListener("click", (e) => handleOutgoingMessage(e));
 document.getElementById("file-upload").addEventListener("click", () => fileInput.click());
-chatBotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
+// chatBotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
+chatBotToggler.addEventListener("click", () => {
+    document.body.classList.toggle("show-chatbot");
+    backdrop.classList.toggle("active");
+});
 
-closeChatbot.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
+closeChatbot.addEventListener("click", () => {
+    document.body.classList.remove("show-chatbot");
+    backdrop.classList.remove("active");
+});
+
+// Also update your backdrop click handler to close chatbot
+backdrop.addEventListener("click", () => {
+    document.body.classList.remove("show-chatbot");
+    backdrop.classList.remove("active");
+});
+
+// closeChatbot.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
 
 
 
@@ -512,7 +522,7 @@ document.getElementById("logout-profile").addEventListener("click", function (e)
     alertBtn.style.display = 'block';
 
     alertBtn.addEventListener('click', function () {
-        window.location.href = "user_signIn";
+        window.location.href = "user_signIn.html";
         alertBox.style.display = 'none';
 
     })
@@ -576,9 +586,9 @@ document.getElementById("searchfield").addEventListener("submit", function (e) {
 
         // Redirect after a delay to let user see the message
         setTimeout(() => {
-        driverResponse.style.display = 'none';
-        driverComing.style.display = 'flex';
-           
+            driverResponse.style.display = 'none';
+            driverComing.style.display = 'flex';
+
         }, 3000);
     }
 
@@ -599,7 +609,7 @@ function showAlert(title, message) {
     document.getElementById('alert-title').textContent = title;
     document.getElementById('alert-summary').textContent = message;
     document.getElementById('customAlert').style.display = 'flex';
-    
+
     // Prevent scrolling
     document.body.classList.add('no-scroll');
     document.documentElement.classList.add('no-scroll'); // Add to html element as well
@@ -608,7 +618,7 @@ function showAlert(title, message) {
 // Function to hide alert
 function hideAlert() {
     document.getElementById('customAlert').style.display = 'none';
-    
+
     // Allow scrolling again
     document.body.classList.remove('no-scroll');
     document.documentElement.classList.remove('no-scroll');
@@ -627,10 +637,121 @@ document.getElementById("logout-profile").addEventListener("click", function (e)
 
     backdrop.style.display = 'none';
     sideMenu.style.display = 'none';
-    
+
     showAlert("Are you sure to signOut Safe-Steps?", "");
-    
-    document.getElementById('confirmBtn').addEventListener('click', function() {
-        window.location.href = "user_signIn";
+
+    document.getElementById('confirmBtn').addEventListener('click', function () {
+        window.location.href = "user_signIn.html";
+    });
+});
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const circleElement = document.getElementById('cursor');
+
+    // Only proceed if the cursor element exists
+    if (!circleElement) {
+        console.error('Cursor element not found');
+        return;
+    }
+
+    const mouse = { x: 0, y: 0 };
+    const previousMouse = { x: 0, y: 0 };
+    const circle = { x: 0, y: 0 };
+    let currentScale = 0;
+    let animationFrameId = null;
+
+    // Set initial position to avoid jumping from (0,0)
+    const initCursorPosition = () => {
+        circle.x = mouse.x;
+        circle.y = mouse.y;
+        circleElement.style.transform = `translate(${circle.x}px, ${circle.y}px)`;
+    };
+
+    const handleMouseMove = (e) => {
+        mouse.x = e.clientX; // Use clientX/Y for consistency
+        mouse.y = e.clientY;
+    };
+
+    const speed = 0.17;
+    const maxSqueeze = 0.5; // Maximum squeeze amount
+    const maxVelocity = 150; // Pixels per frame to reach max squeeze
+
+    const tick = () => {
+        // Smooth follow effect
+        circle.x += (mouse.x - circle.x) * speed;
+        circle.y += (mouse.y - circle.y) * speed;
+
+        // Calculate mouse velocity
+        const deltaMouseX = mouse.x - previousMouse.x;
+        const deltaMouseY = mouse.y - previousMouse.y;
+        previousMouse.x = mouse.x;
+        previousMouse.y = mouse.y;
+
+        // Calculate scale based on velocity
+        const mouseVelocity = Math.min(
+            Math.sqrt(deltaMouseX ** 2 + deltaMouseY ** 2) * 4,
+            maxVelocity
+        );
+        const scaleValue = (mouseVelocity / maxVelocity) * maxSqueeze;
+
+        // Smooth scale transition
+        currentScale += (scaleValue - currentScale) * speed;
+
+        // Apply transformations
+        circleElement.style.transform = `
+    translate(${circle.x}px, ${circle.y}px)
+    scale(${1 + currentScale}, ${1 - currentScale})
+`;
+
+        animationFrameId = requestAnimationFrame(tick);
+    };
+
+    const startAnimation = () => {
+        window.addEventListener('mousemove', handleMouseMove);
+        initCursorPosition();
+        tick();
+    };
+
+    const stopAnimation = () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
+    };
+
+    // Start the animation
+    startAnimation();
+
+    // Clean up if needed (for SPAs or when removing the cursor)
+    // return stopAnimation;
+});
+
+
+const menuBtn = document.getElementById('mobile-menu-btn');
+const closeBtn = document.getElementById('close-btn');
+const close_Menu = document.querySelector('.close_menu');
+const navOptions = document.querySelectorAll('.close_menu ul a');
+
+menuBtn.addEventListener("click", function () {
+    menuBtn.style.display = "none";
+    close_Menu.style.display = "flex";
+});
+
+closeBtn.addEventListener("click", function () {
+    menuBtn.style.display = "flex";
+    close_Menu.style.display = "none";
+});
+
+navOptions.forEach(option => {
+    option.addEventListener("click", function() {
+        menuBtn.style.display = "flex";
+        close_Menu.style.display = "none";
     });
 });
