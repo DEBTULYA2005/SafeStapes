@@ -949,7 +949,9 @@ def admin_panel(request):
     user_location = request.session.get('user_location', None)
     member_location = request.session.get('member_location', None)
 
-    return render(request, 'admin_Panel.html', {
+    frequent_locations = frequent_locations_view(request)
+
+    context = {
         'members': members,
         'admin': admin,
         'members_count': Member.objects.count(), 
@@ -957,8 +959,11 @@ def admin_panel(request):
         'recent_activities': recent_activities,
         'message_activities': message_activities,
         'user_location': user_location,
-        'member_location': member_location
-    })
+        'member_location': member_location,
+        
+    }
+    context.update(frequent_locations)
+    return render(request, 'admin_Panel.html', context)
 
 def delete_member(request, m_id):
     m = Member.objects.get(id=m_id)
@@ -1051,11 +1056,11 @@ def frequent_locations_view(request):
     labels = [loc[0] for loc in sorted_locations]
     values = [loc[1] for loc in sorted_locations]
 
-    context = {
+    return {
         'users': users,
         'location_labels': labels,
         'location_values': values,
         'selected_user': user_id or 'all',
         'selected_status': status or 'all',
     }
-    return render(request, 'admin_Panel.html', context)
+    
