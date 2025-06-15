@@ -67,7 +67,7 @@
                     <!-- add messages  -->
                     <span class="message-count">26</span>
                 </a>
-                <a href="{% url 'frequent-locations' %}" class="menu-item" onclick="showSection('reviews')">
+                <a href="#" class="menu-item" onclick="showSection('reviews')">
                     <span class="material-icons-sharp">reviews</span>
                     <h3>Reviews</h3>
                 </a>
@@ -351,40 +351,7 @@
                         <canvas id="locationChart"></canvas>
                     </div>
                 
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    <script>
-                        const locationCtx = document.getElementById('locationChart').getContext('2d');
-                
-                        new Chart(locationCtx, {
-                            type: 'bar',
-                            data: {
-                                labels: {{ location_labels|safe }},
-                                datasets: [{
-                                    label: 'Number of Rides',
-                                    data: {{ location_values|safe }},
-                                    backgroundColor: '#36A2EB'
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                plugins: {
-                                    legend: { display: false },
-                                    title: {
-                                        display: true,
-                                        text: 'Top Frequently Used Pickup & Dropoff Locations'
-                                    }
-                                },
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        ticks: {
-                                            stepSize: 1
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    </script>
+                    
                 </div>
                 
             </div>
@@ -415,7 +382,40 @@
 
     <script src="{% static 'JavaScript/admin_panel.js' %}"></script>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const locationCtx = document.getElementById('locationChart').getContext('2d');
+                
+        new Chart(locationCtx, {
+            type: 'bar',
+            data: {
+                labels: {{ location_labels|safe }},
+                datasets: [{
+                    label: 'Number of Rides',
+                    data: {{ location_values|safe }},
+                    backgroundColor: '#36A2EB'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Top Frequently Used Pickup & Dropoff Locations'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    </script>
     
 
     {% comment %} <script>
