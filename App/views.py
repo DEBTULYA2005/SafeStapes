@@ -960,6 +960,7 @@ def admin_panel(request):
         'users_count': User.objects.count(), 
         'recent_activities': recent_activities,
         'message_activities': message_activities,
+        'message_count': message_activities.count(),
         'user_location': user_location,
         'member_location': member_location,
         
