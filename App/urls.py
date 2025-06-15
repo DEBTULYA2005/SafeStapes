@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 
+    path('privecy_policies', views.policy, name='privecy_policies'),
     path('frequent-locations/', views.frequent_locations_view, name='frequent_locations'),
 
     path('run_migrations/', views.run_migrations, name='run_migrations'), 

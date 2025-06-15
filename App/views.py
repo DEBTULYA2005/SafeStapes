@@ -26,6 +26,9 @@ import os
 from collections import Counter
 
 
+def policy(request):
+    return render(request, "privacy.html")
+
 def check_redirect_url(request):
     url = reverse('social:complete', args=['google-oauth2'])
     return HttpResponse(f"Redirect URI: {url}")
